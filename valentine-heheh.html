@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Hey Manel... 💌</title>
+
   <style>
     body {
       margin: 0;
@@ -70,11 +71,6 @@
       z-index: 5;
     }
 
-    #noBtn:active,
-    #noBtn:hover {
-      background: #bbb;
-    }
-
     @keyframes float {
       0%,100% { transform: translateY(0); }
       50%     { transform: translateY(-14px); }
@@ -86,27 +82,15 @@
       pointer-events: none;
       animation: drift 10s linear infinite;
       opacity: 0.6;
-      will-change: transform;
     }
 
     @keyframes drift {
       0%   { transform: translateY(110vh) rotate(0deg); }
       100% { transform: translateY(-35vh) rotate(720deg); }
     }
-
-    @media (max-width: 500px) {
-      .buttons {
-        flex-direction: column;
-        gap: 1.8rem;
-      }
-      button {
-        width: 80vw;
-        max-width: 320px;
-        margin: 0 auto;
-      }
-    }
   </style>
 </head>
+
 <body>
 
   <h1>Hey Manel...<br>would u be my valentine? 🥺💕</h1>
@@ -116,134 +100,101 @@
     <button id="noBtn">No 😔</button>
   </div>
 
-  <script>
-    const noBtn = document.getElementById('noBtn');
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+<script>
+  const yesBtn = document.getElementById('yesBtn');
+  const noBtn = document.getElementById('noBtn');
+  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
-    if (isTouchDevice) {
-      let targetPos = { x: 0, y: 0 };
-      let currentPos = { x: 0, y: 0 };
-      let isRunning = false;
 
-      function animate() {
-        currentPos.x += (targetPos.x - currentPos.x) * 0.22;
-        currentPos.y += (targetPos.y - currentPos.y) * 0.22;
-        noBtn.style.transform = `translate(${currentPos.x}px, ${currentPos.y}px)`;
-        requestAnimationFrame(animate);
-      }
-      requestAnimationFrame(animate);
-
-      const moveHandler = (e) => {
-        if (!e.touches || e.touches.length === 0) return;
-        const touch = e.touches[0];
-
-        const rect = noBtn.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-
-        const dx = touch.clientX - centerX;
-        const dy = touch.clientY - centerY;
-        const distance = Math.hypot(dx, dy);
-
-        if (distance < 110) {
-          let escapeX = -dx * 1.8;
-          let escapeY = -dy * 1.8;
-
-          escapeX += (Math.random() - 0.5) * 50;
-          escapeY += (Math.random() - 0.5) * 50;
-
-          targetPos.x = Math.max(-160, Math.min(160, escapeX));
-          targetPos.y = Math.max(-140, Math.min(140, escapeY));
-
-          isRunning = true;
-        } else if (isRunning) {
-          targetPos.x *= 0.87;
-          targetPos.y *= 0.87;
-
-          if (Math.abs(targetPos.x) < 5 && Math.abs(targetPos.y) < 5) {
-            targetPos.x = 0;
-            targetPos.y = 0;
-            isRunning = false;
-          }
-        }
-      };
-
-      document.addEventListener('touchmove', moveHandler, { passive: true });
-      document.addEventListener('touchstart', moveHandler, { passive: true });
-    }
-
-    document.getElementById('yesBtn').addEventListener('click', () => {
-      document.body.innerHTML = `
-        <div style="
-          height: 100vh;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          background: linear-gradient(135deg, #ff9ec1, #ffdde1, #fff);
-          font-family: 'Comic Sans MS', cursive, sans-serif;
-          color: #c71585;
-          overflow: hidden;
-          padding: 10px;
-          box-sizing: border-box;
+  function yesHandler() {
+    document.body.innerHTML = `
+      <div style="
+        height:100vh;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:center;
+        background:linear-gradient(135deg,#ff9ec1,#ffdde1,#fff);
+        font-family:'Comic Sans MS',cursive;
+        color:#c71585;
+        overflow:hidden;
+        padding:10px;
+      ">
+        <h1 style="
+          font-size:clamp(3.2rem,12vw,5.8rem);
+          animation:bounce 1.6s infinite;
+          text-align:center;
         ">
-          <h1 style="
-            font-size: clamp(3.2rem, 12vw, 5.8rem);
-            margin: 0;
-            animation: bounce 1.6s infinite;
-            text-shadow: 0 0 30px #ffb6c1;
-            text-align: center;
-          ">
-            YAYYYYYYYYYYYY!!! 💖🎉
-          </h1>
+          YAYYYYYYYYYYYY!!! 💖🎉
+        </h1>
 
-          <p style="
-            font-size: clamp(1.6rem, 6vw, 2.6rem);
-            margin: 1.5rem 0;
-            text-align: center;
-            max-width: 90vw;
-          ">
-            You said YES Hakda ta3ajbiniiiiiii😏!
-          </p>
+        <p style="font-size:clamp(1.6rem,6vw,2.6rem); text-align:center;">
+          You said YES Hakda ta3ajbiniiiiiii 😏!
+        </p>
 
-          <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExamRiMHZ3ZmJyNWt4cTVtdnp6M2Vvd200aGJrNHNsZWQ5MG5wc2ZxbSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/fUQ4rhUZJYiQsas6WD/giphy.gif"
-               alt="happy moment"
-               style="
-                 max-width: 88vw;
-                 max-height: 40vh;
-                 border-radius: 24px;
-                 box-shadow: 0 16px 44px rgba(0,0,0,0.28);
-                 margin: 2rem 0;
-               ">
+        <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExamRiMHZ3ZmJyNWt4cTVtdnp6M2Vvd200aGJrNHNsZWQ5MG5wc2ZxbSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/fUQ4rhUZJYiQsas6WD/giphy.gif"
+          style="max-width:90vw;border-radius:20px;">
 
-          <div style="font-size: clamp(2.2rem, 8vw, 3.8rem); margin-top: 1.2rem;">
-            🎀 🍓 💞 🌸 ✨ 🫶 💘 🍰 🐾
-          </div>
+        <div style="font-size:3rem;margin-top:1rem;">
+          🎀 🍓 💞 🌸 ✨ 🫶 💘
         </div>
+      </div>
 
-        <style>
-          @keyframes bounce {
-            0%,100% { transform: translateY(0); }
-            50%     { transform: translateY(-30px); }
-          }
-        </style>
-      `;
-    });
+      <style>
+        @keyframes bounce {
+          0%,100% { transform: translateY(0); }
+          50% { transform: translateY(-30px); }
+        }
+      </style>
+    `;
+  }
 
-    function spawnHeart() {
-      const heart = document.createElement('div');
-      heart.className = 'heart';
-      heart.textContent = ['💗','💖','💕','✨','🌸','🍓','🫶'][Math.floor(Math.random()*7)];
-      heart.style.left = Math.random() * 100 + 'vw';
-      heart.style.animationDuration = (8 + Math.random() * 9) + 's';
-      heart.style.fontSize = (1.1 + Math.random() * 2.4) + 'rem';
-      document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 17000);
+  yesBtn.addEventListener('click', yesHandler);
+  yesBtn.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    yesHandler();
+  });
+
+
+  if (isTouchDevice) {
+    let target = { x: 0, y: 0 };
+    let current = { x: 0, y: 0 };
+
+    function animate() {
+      current.x += (target.x - current.x) * 0.25;
+      current.y += (target.y - current.y) * 0.25;
+      noBtn.style.transform = `translate(${current.x}px, ${current.y}px)`;
+      requestAnimationFrame(animate);
     }
+    animate();
 
-    const heartInterval = isTouchDevice ? 900 : 600;
-    setInterval(spawnHeart, heartInterval);
-  </script>
+    document.addEventListener('touchmove', (e) => {
+      if (e.target.tagName === 'BUTTON') return;
+
+      const t = e.touches[0];
+      const r = noBtn.getBoundingClientRect();
+      const dx = t.clientX - (r.left + r.width / 2);
+      const dy = t.clientY - (r.top + r.height / 2);
+      const dist = Math.hypot(dx, dy);
+
+      if (dist < 120) {
+        target.x = Math.max(-160, Math.min(160, -dx * 1.8));
+        target.y = Math.max(-140, Math.min(140, -dy * 1.8));
+      }
+    }, { passive: true });
+  }
+
+  
+  setInterval(() => {
+    const h = document.createElement('div');
+    h.className = 'heart';
+    h.textContent = ['💖','💕','🌸','🍓','✨'][Math.floor(Math.random()*5)];
+    h.style.left = Math.random()*100 + 'vw';
+    h.style.animationDuration = (8 + Math.random()*6) + 's';
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 15000);
+  }, 700);
+</script>
 
 </body>
 </html>
